@@ -1,0 +1,1305 @@
+package rules;
+import java.util.Map;
+import java.util.HashMap
+import org.apache.commons.lang3.StringUtils;
+global java.util.HashMap resultMap;
+
+//名称需唯一
+
+//==============================================个人纬度规则定义开始==============================================//
+/**
+ 个人-红线
+ 安全红线 每次-20分
+**/
+rule "aqhx"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value > 0){
+        $parameters.put("score", -20 * value);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+ 个人-红线
+ 数据造假 每次-20分
+**/
+rule "sjzj"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+        if(value > 0){
+            $parameters.put("score", -20 * value);
+        }else{
+            $parameters.put("score", 0);
+        }
+end
+
+/**
+ 个人-开源贡献集团排名
+ 第一名 +10分
+ 第二名 +8分
+ 第三名 +5分
+ 第四名到第六名 +3分
+ 第七名到第十名 +2分
+**/
+rule "kygxjtpm2"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+            $parameters.put("score", 0);
+    }
+    if (value == 1) {
+        $parameters.put("score", 10);
+    }else if (value == 2){
+        $parameters.put("score", 8);
+    }else if (value == 3){
+        $parameters.put("score", 5);
+    }else if (value >= 4 && value <= 6){
+        $parameters.put("score", 3);
+    }else if (value >= 7 && value <= 10){
+        $parameters.put("score", 2);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+ 个人-知识沉淀分享-中心
+ +5 * 次数
+**/
+rule "zscdfx2-zx"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * 5);
+    }
+
+end
+
+/**
+ 个人-知识沉淀分享-DT纬度
+ +10 * 次数
+**/
+rule "zscdfx2-dt"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * 10);
+    }
+
+end
+
+/**
+ 个人-知识沉淀分享-最佳实践
+ +2 * 次数
+**/
+rule "zscdfx2-zjsj"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * 2);
+    }
+
+end
+
+/**
+ 个人-组织贡献
+ +2 * 次数
+**/
+rule "zzgx2"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * 2);
+    }
+
+end
+
+
+
+
+/**
+ 个人-逾期提测故事数
+ -2 * 次数
+**/
+rule "yqwtcgss"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * -2);
+    }
+
+end
+
+
+/**
+ 个人-缺陷重开个数
+ -5 * 次数
+**/
+rule "qxckgs"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",value * -5);
+    }
+end
+
+
+/**
+ 个人-缺陷修复时间 > 2
+ -5 * 次数
+**/
+rule "qxxfsjdy2"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else {
+        $parameters.put("score",value * -5);
+    }
+
+end
+
+
+/**
+ 个人-工时忘记填报
+ -5 * 次数
+**/
+rule "gswjtb"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else {
+        $parameters.put("score",value * -5);
+    }
+
+end
+
+/**
+ 个人-人为原因导致故障
+ -10 * 次数
+**/
+rule "rwyydzgz"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else {
+        $parameters.put("score",value * -10);
+    }
+
+end
+
+
+/**
+ 个人-分支合并问题
+ -5 * 次数
+**/
+rule "fzhbwt"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else {
+        $parameters.put("score",value * -5);
+    }
+
+end
+
+//==============================================个人纬度规则定义结束==============================================//
+
+
+//团队相关得分
+//生产率[需求交付]  >= 0.75合格
+rule "gongshifenxishengchanlv"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value < 0.75 ?  -10 : 0 );
+end
+
+//工时投入 <0.8人天： -10分
+rule "gongshifenxigongsitouru"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value < 0.8 ?  -10 : 0 );
+end
+//T-2/T-4 提测 >0 -10 分
+rule "ttice"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value > 0 ?  -10 : 0 );
+end
+//按时提测 <100% -20 分
+rule "anshiticelvanshitice"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String dimensional = (String)$parameters.get("dimensional");
+    String s = dimensional.contains("%") ? dimensional.replaceAll("%",""):dimensional;
+    Double value = Double.valueOf(s);
+    $parameters.put("score", value < 100 ?  -20 : 0 );
+end
+//提测规划 非64分布 - 10 分
+rule "anshiticelvticeguihua"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+    $parameters.put("score", value.equals("否") ?  -10 : 0 );
+end
+//计划外故事占比 0~10% -10分，>=10% -20分
+rule "jihuawaigushizhanbi"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String dimensional = (String)$parameters.get("dimensional");
+    String s = dimensional.contains("%") ? dimensional.replaceAll("%",""):dimensional;
+    Double value = Double.valueOf(s);
+    $parameters.put("score", value > 0 ? value < 10 ? -10 : -20 : 0 );
+end
+//优秀榜 +20分
+rule "ranjintuzhibiaoyouxiubang"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+        $parameters.put("score", value.equals("是") ?  +20 : 0 );
+end
+//待提升榜 -20 分
+rule "ranjintuzhibiaodaitishengbang"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+    $parameters.put("score", value.equals("是") ?  -20 : 0 );
+end
+//故事冲刺外循环 >0, 扣- 40 分
+rule "gushichongciwaixunhuan"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value > 0 ?  -40 : 0 );
+end
+//测试用例评审 未如期 - 10分
+rule "liuchengzhixingceshiyonglipengshen"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+    $parameters.put("score", value.equals("未如期") ?  -10 : 0 );
+end
+//冲刺技术评审情况 未如期 - 10分
+rule "liuchengzhixingchongcijishupingshenqingkuang"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+    $parameters.put("score", value.equals("未如期") ?  -10 : 0 );
+end
+//冲刺复盘会 未如期 - 10分
+rule "liuchengzhixingchongcifupanhui"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String)$parameters.get("dimensional");
+    $parameters.put("score", value.equals("未如期") ?  -10 : 0 );
+end
+
+/**
+技术指标
+**/
+
+//技术债 0-10天：+40 10-20天：+10分/月；>20天：0分/月
+rule "jishuzhai"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value > 0 ? value < 10 ? 40 : value < 20 ? 10 : 0 : 0 );
+end
+
+//技术债密度 <=0.2：+40分 0.2-0.4：0；>0.4：0分/月
+rule "jishuzhaimidu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value <= 0.2 ? 40 : value <0.4 ? 0 : 0 );
+end
+//增量技术债密度 降低>10 +20分；0-10 +10分 ；<0 0分
+rule "zengliangjishuzhaimidu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", value >10 ? 20 : value > 0 ? 10 : 0);
+end
+
+//性能引起的问题 0
+rule "xingnengyinqiwenti"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    //Double value = Double.valueOf($parameters.get("dimensional").toString());
+    $parameters.put("score", 0);
+end
+
+
+/**
+    安全管理
+    严重安全漏洞及时修复=0
+    严重：-60分/次； >=0
+**/
+rule "yanzhonganquanloudongjishixiufu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -60 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    高威安全漏洞及时修复=0
+    高威：40分/次； >=0
+**/
+rule "gaoweianquanloudongjishixiufu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -40 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    中威严重安全漏洞及时修复=0
+    中威：-20分，上不封顶； >=0
+**/
+rule "zhongweianquanloudongjishixiufu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -20 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    产品安全风险
+    >=80 & <= 100: 0;
+    >=60&<80：-20分；
+    >=40&<60：-40分；
+    <40：-60分
+    [0,100]
+**/
+rule "chanpinanquanfengxian"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue < 0 || intValue > 100){
+        $parameters.put("score", 0);
+    }else if(intValue >= 80 && intValue <= 100){
+        $parameters.put("score", 0);
+    }else if(intValue >= 60 && intValue < 80){
+        $parameters.put("score", -20);
+    }else if(intValue >= 40 && intValue < 60){
+        $parameters.put("score", -40);
+    }else{
+        $parameters.put("score", -60);
+    }
+end
+
+/**
+    安全管理
+    AD架构复审安全问题=0
+    -40分/项
+    >=0
+**/
+rule "adjiagoufushenanquan"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -40 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    安全审计-系统级风险
+    系统级风险：-100分/次；
+    >=0
+**/
+rule "anquanshenjixitongjifengxian"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -100 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    安全审计-重大缺陷
+    重大缺陷：-50分/次；
+    >=0
+**/
+rule "anquanshenjizhongdaquexian"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -50 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    安全管理
+    安全审计-一般缺陷
+    一般缺陷：-20分/次
+    >=0
+**/
+rule "anquanshenjiyibanquexian"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int intValue = Integer.parseInt(value);
+    if(intValue > 0){
+        $parameters.put("score", -20 * intValue);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+
+/**
+    变更管理-紧急变更数
+    有一次紧急变更扣20分，两次扣50，三次及以上扣100
+**/
+
+rule "jinjibiangengshu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int emergencyChanges = Integer.parseInt($parameters.get("dimensional").toString());
+    if (emergencyChanges <= 0) {
+        $parameters.put("score", 0);
+    } else if (emergencyChanges == 1) {
+        $parameters.put("score", -20);
+    } else if (emergencyChanges == 2) {
+        $parameters.put("score", -50);
+    } else {
+        $parameters.put("score", -100);
+    }
+end
+
+/**
+    变更管理-总变更数
+    3次以下不扣分，超出一次扣10分
+**/
+
+rule "zongbiangengshu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int totalChanges = Integer.parseInt($parameters.get("dimensional").toString());
+    $parameters.put("score", totalChanges >= 3 ? -10 * totalChanges : 0);
+end
+
+/**
+    变更管理-计划外变更
+    一次计划外变更扣20分
+**/
+
+rule "jihuawaibiangeng"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int totalChanges = Integer.parseInt($parameters.get("dimensional").toString());
+    $parameters.put("score", totalChanges > 0 ? -20 * totalChanges : 0);
+end
+
+/**
+    变更管理-平均发版时间
+    DT发版时常排行榜进入榜单 top10 扣30分/次
+**/
+
+rule "pingjinfabancishu"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String isInTop10 = $parameters.get("dimensional").toString();
+    $parameters.put("score", isInTop10.equals("是") ? -30 : 0);
+end
+
+
+/**
+    代码管理-主干开发|分支数>5
+    单产品/子项目，按分支最多流水线统计，5+：0分，5:6分，4:12分，3:20分，2:40分
+    备注：每周一拉一次，4次做平均
+**/
+
+rule "zhugankaifahuofenzhishudayu5"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int branches = Integer.parseInt($parameters.get("dimensional").toString());
+    if (branches > 5) {
+        $parameters.put("score", 0);
+    } else if (branches == 5) {
+        $parameters.put("score", 6);
+    }  else if (branches == 4) {
+        $parameters.put("score", 12);
+    } else if (branches == 3) {
+        $parameters.put("score", 20);
+    } else if (branches == 2) {
+        $parameters.put("score", 40);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    代码管理-非标准分支命名
+    非master、ci、feature、hotfix命名，一次扣5分
+**/
+
+rule "feibiaozhunmingming"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int value = Integer.parseInt($parameters.get("dimensional").toString());
+    if (value <= 0) {
+        $parameters.put("score", 0);
+    } else {
+        $parameters.put("score", -5 * value);
+    }
+end
+
+/**
+    代码管理-commit 规范
+    不规范：一项扣5分
+**/
+
+rule "commitguifan"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int value = Integer.parseInt($parameters.get("dimensional").toString());
+    if (value <=0) {
+        $parameters.put("score", 0);
+    } else {
+        $parameters.put("score", -5 * value);
+    }
+end
+
+/**
+    代码管理-有效comment数量/代码行数排名
+    上限20分，每个comment数量/代码行数 <0.1% 0分；<=0.2% 3分；<=0.3% 6分；<=0.4% 10分；<=0.5%: 20分
+**/
+
+rule "daimahangshupaiming"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    double percentage = Double.parseDouble($parameters.get("dimensional").toString().replace("%",""));
+    $parameters.put("score", percentage <= 0.1 ? 0 : percentage <= 0.2 ? 3 : percentage <= 0.3 ? 6 : percentage <= 0.4 ? 10 : 20);
+end
+
+/**
+    代码管理-Review 发现bug
+    上限 20分， Review 每发现一个bug +1分
+**/
+
+rule "reviewbug"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int bugCount = Integer.parseInt($parameters.get("dimensional").toString());
+    $parameters.put("score", Math.min(bugCount, 20));
+end
+
+/**
+    代码管理-代码评审阶段缺陷占比
+    <1%，加20分;>=1% & < 2% 加15分;>=2% & < 3% 加10分;>=3% & < 4% 加5分；;>=4% & < 5% 加1分；>= 5% 0分
+**/
+
+rule "daimapingshenquexianzhanbi"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+   double percentage = Double.parseDouble($parameters.get("dimensional").toString().replace("%",""));
+       $parameters.put("score", percentage < 1 ? 20 : percentage < 2 ? 15 : percentage < 3 ? 10 : percentage <= 4 ? 5 : percentage <= 5 ? 1 : 0);
+end
+
+/**
+    代码管理-集中代码评审
+    上限 20分，中心集中评审，双周一次，参与奖5分，排名1 2 3 分别 额外加15、10、5分（如参与4组，分别为20、15、10、5）
+**/
+
+rule "jizhongdaimapingshen"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int participantCount = Integer.parseInt($parameters.get("dimensional").toString());
+    $parameters.put("score", participantCount == 1 ? 20 : participantCount == 2 ? 15 : participantCount == 3 ? 10 : participantCount >= 4 ? 5 : 0);
+end
+
+
+
+
+/**
+    监控管理-拨测监控接入=100%
+    <100% -20
+**/
+
+rule "bocejiankongjierubaifenbai"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    double value = Double.parseDouble($parameters.get("dimensional").toString().replaceAll("%", ""));
+    if (value >= 100) {
+        $parameters.put("score", 0); // 不扣分
+    } else {
+        $parameters.put("score", -20);
+    }
+end
+
+/**
+    监控管理-监控告警配置-非监控发现故障
+    -20
+**/
+
+rule "jiankonggaojingpeizhi"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int value = Integer.parseInt($parameters.get("dimensional").toString());
+    if(value > 0){
+        $parameters.put("score", -20 * value);
+    }else {
+        $parameters.put("score", 0); // 不扣分
+    }
+end
+
+/**
+    监控管理-错误日志管理
+    >500条/天 -20
+    (300-500)条/天 -10
+    >100条/天 -5
+**/
+
+rule "cuowurizhichuli"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int value = Integer.parseInt($parameters.get("dimensional").toString());
+    if (value > 500) {
+        $parameters.put("score", -20);
+    } else if (value >= 300 && value <= 500) {
+        $parameters.put("score", -10);
+    } else if (value > 100) {
+        $parameters.put("score", -5);
+    } else {
+        $parameters.put("score", 0); // 不扣分
+    }
+end
+
+/**
+    监控管理-敏感日志治理
+    >1条，扣20分
+**/
+
+rule "minganrizhizhili"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int value = Integer.parseInt($parameters.get("dimensional").toString());
+    if (value >= 1) {
+        $parameters.put("score", -20);
+    }else {
+        $parameters.put("score", 0); // 不扣分
+    }
+end
+
+
+/**
+    产品稳定 - 产品稳定性>99.95%
+    <99.95% -50
+**/
+
+rule "chanpinwendingxingdayu99.95"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = $parameters.get("dimensional").toString();
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isNotBlank(s) ? Double.parseDouble(s) : 0;
+    if(dValue <= 0){
+        $parameters.put("score", 0); // 不扣分
+    }else if (dValue >= 99.95) {
+        $parameters.put("score", 0); // 不扣分
+    } else {
+        $parameters.put("score", -50);
+    }
+end
+
+/**
+    产品稳定 - 集团级故障-P0
+    -50 * 次数
+**/
+
+rule "jituanguzhangp0"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -50 * count);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    产品稳定 - 集团级故障-P1
+    -30 * 次数
+**/
+
+rule "jituanguzhangp1"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -30 * count);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    产品稳定 - 集团级故障-P2
+    -10 * 次数
+**/
+
+rule "jituanguzhangp2"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -10 * count);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+   产品稳定 -  集团级故障-隐瞒
+    -50 * 次数
+**/
+
+rule "jituanguzhangyinman"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -50 * count);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+
+/**
+    产品稳定 - 中心级别事件-P0
+    -20 * 次数
+**/
+
+rule "zhongxinjibieguzhangp0"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -20 * count);
+    } else {
+        $parameters.put("score", 0);
+    }
+end
+
+
+/**
+    产品稳定 - 中心级别事件-P1
+    -10 * 次数，次数>=0
+**/
+
+rule "zhongxinjibieguzhangp1"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count >= 0) {
+        $parameters.put("score", -10 * count);
+    } else {
+        $parameters.put("score", 0); // 如果次数为负数，则分数为0
+    }
+end
+
+
+
+/**
+    产品稳定 - 中心级别事件-P2
+    -5 * 次数，次数>0
+**/
+
+rule "zhongxinjibieguzhangp2"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if (count > 0) {
+        $parameters.put("score", -5 * count);
+    } else {
+        $parameters.put("score", 0); // 如果次数为0，则分数也为0
+}
+end
+
+
+
+/**
+    产品稳定 - 中心级别事件-隐瞒
+    -50 * 次数，次数>=0
+**/
+
+rule "zhongxinjibieguzhangyinman"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    int count = Integer.parseInt($parameters.get("dimensional").toString());
+    if(count > 0) {
+        $parameters.put("score", -50 * count);
+    } else {
+        // 无效的次数，不扣分
+        $parameters.put("score", 0);
+    }
+end
+
+
+
+/**
+    质量管理-增量单测>25%
+    >25% 不扣分 20-25% -10分，<20% -20分
+**/
+
+rule "zengliangdancedayu25"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isBlank(s) ? 0 : Double.valueOf(s);
+    if(dValue > 0 && dValue < 20){
+        $parameters.put("score", -20);
+    }else if(dValue >= 20 && dValue <= 25){
+        $parameters.put("score", -10);
+    }else if (dValue > 25){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+    质量管理-全量单测>30%
+    >30% 不扣分 25%-30% -10分，<25% -20分
+**/
+
+rule "quanliangdancedayu30"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isBlank(s) ? 0 : Double.valueOf(s);
+    if(dValue > 0 && dValue < 25){
+        $parameters.put("score", -20);
+    }else if(dValue >= 25 && dValue <= 30){
+        $parameters.put("score", -10);
+    }else if (dValue > 30){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+
+/**
+ 质量管理-单测筛查不过
+ 不通过 -10分
+**/
+rule "danceshaichabutongguo"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    int score = value.equals("不通过") ? -10 : 0;
+    $parameters.put("score", score);
+end
+
+/**
+质量管理 - 冒烟通过率
+< 100% -20分
+**/
+
+rule "maoyantongguolv"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isBlank(s) ? 0 : Double.valueOf(s);
+    if(dValue <= 0){
+        $parameters.put("score", 0);
+    }else if(dValue < 100){
+        $parameters.put("score", -20);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+质量管理 - 缺陷平均修复时间
+<1天 不扣分 ，>1天 -10分
+**/
+rule "quexianpingjunxiufushijian"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    double dValue = StringUtils.isBlank(value) ? 0 : Double.valueOf(value);
+    if(dValue <= 0){
+        $parameters.put("score", 0);
+    }else if(dValue > 1){
+        $parameters.put("score", -10);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+
+
+/**
+质量管理 - 缺陷逃逸率 （故障复盘确定）
+=0 不扣分，>1个 -10分
+**/
+
+rule "quexiantaoyilv"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isBlank(s) ? 0 : Double.valueOf(s);
+    if(dValue <= 0){
+        $parameters.put("score", 0);
+    }else if(dValue > 1){
+        $parameters.put("score", -10);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+
+/**
+质量管理 - 验收缺陷占比
+<= 30% 不扣分，> 30% -10分
+**/
+
+rule "yanshouquexianzhanbi"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    String value = (String) $parameters.get("dimensional");
+    String s = value.contains("%") ? value.replaceAll("%","") : value;
+    double dValue = StringUtils.isBlank(s) ? 0 : Double.valueOf(s);
+    if(dValue <= 30){
+        $parameters.put("score", 0);
+    }else if(dValue > 30){
+        $parameters.put("score", -10);
+    }else{
+        $parameters.put("score", 0);
+    }
+end
+
+/**
+团队管理 - 技术社区大会
+**/
+rule "jishushequdahui"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",100 * value);
+    }
+end
+
+/**
+团队管理 - 产品社区大会
+**/
+
+rule "chanpinshequdahui"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else {
+        $parameters.put("score",100 * value);
+    }
+
+end
+
+/**
+团队管理 - 项目管理社区大会
+**/
+
+rule "xiangmuguanlishequdahui"
+when
+    $parameters: Map(
+        containsKey("dimensional")
+    )
+then
+    Integer value = Integer.parseInt(String.valueOf($parameters.get("dimensional")));
+    if(value == null || value <= 0){
+        $parameters.put("score", 0);
+    }else{
+        $parameters.put("score",100 * value);
+    }
+
+end

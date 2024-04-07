@@ -1,0 +1,16 @@
+# ===================================================================
+# springboot标准配置
+# ===================================================================
+spring:
+  profiles:
+    # 对应启动的配置文件
+    active: uat
+  application:
+    name: datav-admin
+
+longhub:
+  log:
+    enabled: true
+  http:
+    conf:
+      log-enabled: true

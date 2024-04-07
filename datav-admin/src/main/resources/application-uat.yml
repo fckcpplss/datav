@@ -1,0 +1,16 @@
+app:
+  id: longfor-console-configuration
+apollo:
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: lc-datav-admin
+  meta: http://apolloconfig.longfor.sit
+  cluster: uat+1884b6d3f27c4cf20693f7c514a287904b798f21
+env: SIT
+
+# 调试用
+logging:
+  level:
+    com.longfor.longhub.lmember.godspen.admin.feign.*: debug
